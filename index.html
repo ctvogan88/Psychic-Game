@@ -15,17 +15,19 @@
         </div>
         <br>
         <div class="">
-            <p><span id="compMsg">Guess what letter I'm thinking of!</span></p>
-            <p>Wins: <strong><span id="winCt">0</span></strong></p>
-            <p>Losses: <span id="lossCt"><strong>0</strong></span></p>
-            <p>Guesses Remaining: <span id="userGuessCt"><strong>10</strong></span></p>
-            <p>Your Guesses thus Far: <span id="userGuessList"><strong></strong></span></p>
+            <h4><span id="compMsg" style="color:blue">Guess what letter I'm thinking of!</span></h4>
+            <br>
+            <p>Wins: <strong><span id="winCt"></span></strong></p>
+            <p>Losses: <strong><span id="lossCt"></span></strong></p>
+            <p>Guesses Remaining: <strong><span id="userGuessCt"></span></strong></p>
+            <p>Your Guesses thus Far: <strong><span id="userGuessList"></span></strong></p>
 
         </div>
     </div>
 
     <script type="text/javascript">
-        // Let's start by grabbing a reference to the <span> below.
+
+        //variables defined
         var wins = 0;
         var losses = 0;
         var freshGuess = "";
@@ -33,69 +35,117 @@
         var guessCt = 0;
         var userGuesses = [];
         var m = "";
-        
-        var computerChoices = ["abcdefghijklmnopqrstuvwxyz"];
-        
-        for (var i = 0; i<1; i++){
-                      
-            //invoke random string function
-            randomStr(m);
-            compGuess = s;
-            console.log("Randomly generated computer character: " + compGuess);
-        }
 
-        function randomStr(m) {
-            var m = m || 1; s = '', r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            for (var i=0; i < m; i++) {
-                s += r.charAt(Math.floor(Math.random()*r.length)); 
-            }
-	        //console.log(s);
-        };
-
-    
-        
+        //asks user if he wants to play the game
         var userPlay = confirm("Would you like to play the Psychic Game?");
-
+        
+        //runs game if user confirms above question
         if(userPlay){
 
-            freshGuess = prompt("Guess a letter!");
+            //randomly generates a character
+            charGen();
+            
+            document.getElementById("userGuessCt").innerHTML = 10;
 
-            if (freshGuess == compGuess) {
-                alert("You won right off the bat you lucky SOB!")
-                wins++;
-                document.getElementById("winCt").innerHTML = wins;
-                document.getElementById("compMsg").innerHTML = "Congrats you win!";
-            }
-            else if (freshGuess !== compGuess) {
-                for (var i=0; (i<10 && freshGuess !== compGuess); i++) {
+            //displays welcome message and score
+            welcomeMsg();
+            
+            runGame();
 
-                    freshGuess = prompt("Guess a new letter!");
+            //analyze keystroke function
+            function runGame(){
 
-                    guessCt++;
-
-                    document.getElementById("userGuessList").innerHTML = "GUESSES";
+                //waits for user to press key then jumps into the analysis
+                document.onkeyup = function (event) {
                     
+                    //assigns the key pressed to a variable
+                    var freshGuess = event.key;            
+                    
+                    //adds key to array
                     userGuesses.push(freshGuess);
 
-                    console.log("Total Guesses: " + userGuesses.length + "... 8" + userGuesses);
-                    console.log("Current Guess: " + freshGuess);
-                    console.log("Guesses Remaining: " + (10 - guessCt));
-
+                    //displays guesses on screen
                     document.getElementById("userGuessList").innerHTML = userGuesses;
+                    
+                    //allows user to make no more than 7 guesses
+                    //if (userGuesses.length == 7) { break; } 
+                    
+
+                    //if user guesses correctly, message is alerted, wins incremented, display updated
+                    if (freshGuess == compGuess) {
+                        document.getElementById("compMsg").innerHTML = "Congrats you win! Try again!";
+                        wins++;
+                        document.getElementById("winCt").innerHTML = wins;
+                        document.getElementById("userGuessCt").innerHTML = (guessCt = 0);
+                        charGen();
+                        runGame();
+                    }
+
+                    //if user user guesses incorrectly
+                    else if (freshGuess !== compGuess) {
+
+                        for(guessCt = 1; (guessCt < 11); guessCt++){
+                            
+                            if (guessCt === 10) {
+                                losses++;
+                                userGuesses = [];
+                                welcomeMsg();
+                                charGen();
+                                runGame();
+                            }
+
+                            //var newGuess = "";
+
+                            //increments the number of guesses
+                            //guessCt++;
+                            console.log(guessCt);
+                            
+                            //updates the display of guesses remaining
+                            document.getElementById("userGuessCt").innerHTML = (10 - guessCt);
+                            //console.log("guess count display updated");
+                            
+                            //updates display message
+                            document.getElementById("compMsg").innerHTML = "Nope. That ain't right. Attempt number " + guessCt + " wrong! Guess again!";
+                            
+                            //welcomeMsg();
+                            //runGame();
+
+                            
+                        }
+                    }
+
+                    runGame();
                 }
             }
         }
 
-        function myFunction() {
-            userGuesses.push(freshGuess);
-            document.getElementById("demo").innerHTML = fruits;
+    //--------------------------------------------------------------------------------------//
+
+        //changes display message to ask user to press any key
+        function welcomeMsg() {
+            document.getElementById("compMsg").innerHTML = "Guess any letter or number. Best out of 7 wins!";
+            document.getElementById("winCt").innerHTML = wins;
+            document.getElementById("lossCt").innerHTML = losses;
         }
 
-        // Next, we give JavaScript a function to execute when onkeyup event fires.
-        //document.onkeyup = function(event) {
-        //  wins.textContent = event.key;
 
-        //  var wins = document.getElementById("winCt");
+        //function that creates 1-digit random string
+        function charGen() {
+            for (var i = 0; i<1; i++){      
+                //invoke random string function
+                randomStr(m);
+                compGuess = s;
+                console.log("Randomly generated computer character: " + compGuess);
+            }
+        
+            //random character generator
+            function randomStr(m) {
+                var m = m || 1; s = '', r = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                for (var i=0; i < m; i++) {
+                    s += r.charAt(Math.floor(Math.random()*r.length)); 
+                }
+            }
+        };
 
     </script>
 
