@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Psychic Game Demo</title>
-    <link href="assets/images/favicon.png" rel="shortcut icon" type="./image/x-icon">
+    <link href="assets/images/favicon.png" rel="shortcut icon">
     <span class="glyphicons glyphicons-education"></span>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
@@ -16,7 +16,7 @@
 }
     .bg {
         /* The image used */
-        background-image: url("https://n6-img-fp.akamaized.net/free-photo/background-of-letterpress-wood-type-printing-blocks-random-letters-of-alphabet_9635-35.jpg?size=338&ext=jpg");
+        background-image: url("https://previews.123rf.com/images/iqoncept/iqoncept1305/iqoncept130500023/19421093-many-alphabet-letters-in-a-jumbled-mess-of-a-3d-display-or-background-of-words-and-messages-Stock-Photo.jpg");
     
         /* Full height */
         height: 100%; 
@@ -27,9 +27,8 @@
         background-size: cover;
     }
     .myBackground {
-        background-color: rgba(217, 221, 255, 0.5);
-        color: inherit;
-        
+        background-color: rgba(255, 255, 255, 0.753);
+        color: inherit;  
     }
     </style>
 
@@ -154,7 +153,7 @@
             document.getElementById("userGuessList").innerHTML = "";
             var playAgain = confirm("Would you like to try again?");
             if(playAgain){
-                var guessCt = 0;
+                guessCt = 0;
                 charGen();
                 runGame();    
             }
