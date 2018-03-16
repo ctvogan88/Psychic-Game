@@ -5,23 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Psychic Game Demo</title>
+    <link href="favicon.png" rel="shortcut icon" type="./image/x-icon">
+    <span class="glyphicons glyphicons-education"></span>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+    body, html {
+    height: 100%;
+    margin: 0;
+}
+    .bg {
+        /* The image used */
+        background-image: url("https://n6-img-fp.akamaized.net/free-photo/background-of-letterpress-wood-type-printing-blocks-random-letters-of-alphabet_9635-35.jpg?size=338&ext=jpg");
+    
+        /* Full height */
+        height: 100%; 
+    
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .myBackground {
+        background-color: rgba(217, 221, 255, 0.5);
+        color: inherit;
+        
+    }
+    </style>
+
 </head>
 <body>
-    <div class="container">
 
-        <div class="header">
-            <h1>The Psychic Game</h1>
-        </div>
-        <br>
-        <div class="">
-            <h4><span id="compMsg" style="color:blue">Guess what letter I'm thinking of!</span></h4>
+    <div class="bg">
+        <div class ="container">
+            <div class="header jumbotron myBackground">
+                <h1><span id="titleMsg">The Psychic Game</span></h1>
+            </div>
             <br>
-            <p>Wins: <strong><span id="winCt"></span></strong></p>
-            <p>Losses: <strong><span id="lossCt"></span></strong></p>
-            <p>Guesses Remaining: <strong><span id="userGuessCt"></span></strong></p>
-            <p>Your Guesses thus Far: <strong><span id="userGuessList"></span></strong></p>
-
+            <div class="jumbotron myBackground">
+                <div style="display: none" id="hideAll">&nbsp;</div>
+                <h4><span id="compMsg" style="color:blue">Guess what letter I'm thinking of!</span></h4>
+                <br>
+                <p>Wins: <strong><span id="winCt"></span></strong></p>
+                <p>Losses: <strong><span id="lossCt"></span></strong></p>
+                <p>Guesses Remaining: <strong><span id="userGuessCt"></span></strong></p>
+                <p>Your Guesses thus Far: <strong><span id="userGuessList"></span></strong></p>
+            </div>
         </div>
     </div>
 
@@ -44,8 +73,6 @@
 
             //randomly generates a character
             charGen();
-            
-            document.getElementById("userGuessCt").innerHTML = 10;
 
             //displays welcome message and score
             welcomeMsg();
@@ -55,74 +82,34 @@
             //analyze keystroke function
             function runGame(){
 
+
+                console.log("Run Game!" + wins + losses + guessCt);
+                if (guessCt == 10) {
+
+                    lossMsg();
+                }
+
                 //waits for user to press key then jumps into the analysis
                 document.onkeyup = function (event) {
                     
-                    //assigns the key pressed to a variable
+                    //assigns the pressed key to a variable
                     var freshGuess = event.key;            
                     
-                    //adds key to array
+                    //adds pressed key to array
                     userGuesses.push(freshGuess);
-
-                    //displays guesses on screen
-                    document.getElementById("userGuessList").innerHTML = userGuesses;
-                    
-                    //allows user to make no more than 7 guesses
-                    //if (userGuesses.length == 7) { break; } 
-                    
 
                     //if user guesses correctly, message is alerted, wins incremented, display updated
                     if (freshGuess == compGuess) {
-                        document.getElementById("compMsg").innerHTML = "Congrats you win! Try again!";
-                        wins++;
-                        document.getElementById("winCt").innerHTML = wins;
-                        document.getElementById("userGuessCt").innerHTML = (guessCt = 0);
+                        winMsg();
                         charGen();
                         runGame();
                     }
 
                     //if user user guesses incorrectly
                     else if (freshGuess !== compGuess) {
-
-                        for(guessCt = 1; (guessCt < 11); guessCt++){
-                            
-                            if (guessCt === 10) {
-                                losses++;
-                                userGuesses = [];
-                                welcomeMsg();
-                                charGen();
-                                runGame();
-                            }
-
-                            document.onkeyup = function (event) {
-                    
-                                //assigns the key pressed to a variable
-                                var freshGuess = event.key;     
-
-                                //var newGuess = "";
-
-                                //increments the number of guesses
-                                //guessCt++;
-                                console.log(guessCt);
-                                
-                                //updates the display of guesses remaining
-                                document.getElementById("userGuessCt").innerHTML = (10 - guessCt);
-                                //console.log("guess count display updated");
-                                
-                                //displays guesses on screen
-                                document.getElementById("userGuessList").innerHTML = userGuesses;
-
-                                //updates display message
-                                document.getElementById("compMsg").innerHTML = "Nope. That ain't right. Attempt number " + guessCt + " wrong! Guess again!";
-                                
-                                //welcomeMsg();
-                                //runGame();
-                            }
-                            
-                        }
+                        wrongGuessMsg();
+                        runGame();
                     }
-
-                    runGame();
                 }
             }
         }
@@ -134,8 +121,48 @@
             document.getElementById("compMsg").innerHTML = "Guess any letter or number. Best out of 7 wins!";
             document.getElementById("winCt").innerHTML = wins;
             document.getElementById("lossCt").innerHTML = losses;
+            document.getElementById("userGuessCt").innerHTML = 10;
         }
 
+        //changes display message accordingly for a user win
+        function winMsg() {
+            wins++;
+            document.getElementById("userGuessList").innerHTML = userGuesses;
+            document.getElementById("compMsg").innerHTML = "Congrats you won. You're " + wins + " for " + (wins + losses) + ". Try again!";
+            document.getElementById("winCt").innerHTML = wins;
+            if(wins == 4){
+                document.getElementById("titleMsg").innerHTML = "GAME OVER - You know too much!";
+            }
+
+        }
+
+        //changes display message accordingly for a wrong guess
+        function wrongGuessMsg() {
+            guessCt++;
+            userGuesses.push(freshGuess);
+            document.getElementById("compMsg").innerHTML = "That's wrong. You have " + (10 - guessCt) + " guesses remaining!";
+            document.getElementById("userGuessCt").innerHTML = (10 - guessCt);
+            document.getElementById("userGuessList").innerHTML = userGuesses;
+        }
+
+        //changes display accordingly for 10 wrong guesses/loss
+        function lossMsg() {
+            losses++;
+            userGuesses = [];
+            document.getElementById("compMsg").innerHTML = "You have now guessed incorrectly " + guessCt + " times. You've lost " + losses + " out of " + (wins + losses) + " attempts. Try again!";
+            document.getElementById("lossCt").innerHTML = losses;
+            document.getElementById("userGuessList").innerHTML = "";
+            var playAgain = confirm("Would you like to try again?");
+            if(playAgain){
+                var guessCt = 0;
+                charGen();
+                runGame();    
+            }
+     
+            if(losses == 4){
+                document.getElementById("titleMsg").innerHTML = "GAME OVER - Move on. This game is not for you!"
+            }
+        }
 
         //function that creates 1-digit random string
         function charGen() {
