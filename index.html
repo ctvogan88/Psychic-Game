@@ -94,22 +94,30 @@
                                 runGame();
                             }
 
-                            //var newGuess = "";
+                            document.onkeyup = function (event) {
+                    
+                                //assigns the key pressed to a variable
+                                var freshGuess = event.key;     
 
-                            //increments the number of guesses
-                            //guessCt++;
-                            console.log(guessCt);
-                            
-                            //updates the display of guesses remaining
-                            document.getElementById("userGuessCt").innerHTML = (10 - guessCt);
-                            //console.log("guess count display updated");
-                            
-                            //updates display message
-                            document.getElementById("compMsg").innerHTML = "Nope. That ain't right. Attempt number " + guessCt + " wrong! Guess again!";
-                            
-                            //welcomeMsg();
-                            //runGame();
+                                //var newGuess = "";
 
+                                //increments the number of guesses
+                                //guessCt++;
+                                console.log(guessCt);
+                                
+                                //updates the display of guesses remaining
+                                document.getElementById("userGuessCt").innerHTML = (10 - guessCt);
+                                //console.log("guess count display updated");
+                                
+                                //displays guesses on screen
+                                document.getElementById("userGuessList").innerHTML = userGuesses;
+
+                                //updates display message
+                                document.getElementById("compMsg").innerHTML = "Nope. That ain't right. Attempt number " + guessCt + " wrong! Guess again!";
+                                
+                                //welcomeMsg();
+                                //runGame();
+                            }
                             
                         }
                     }
